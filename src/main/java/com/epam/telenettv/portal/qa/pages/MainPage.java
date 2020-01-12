@@ -1,8 +1,9 @@
 package com.epam.telenettv.portal.qa.pages;
 
-import com.epam.jdi.uitests.web.selenium.elements.composite.WebPage;
+public class MainPage extends CustomWebPage{
 
-public class MainPage extends WebPage{
-
-	
+	@Override
+	public void waitPageLoaded() {
+		
+	}
 }

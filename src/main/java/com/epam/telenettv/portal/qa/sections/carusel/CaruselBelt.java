@@ -1,5 +1,7 @@
 package com.epam.telenettv.portal.qa.sections.carusel;
 
+import static com.epam.jdi.uitests.core.settings.JDISettings.logger;
+import static com.epam.telenettv.portal.qa.site.TelenettvSite.isBeyondTheScreen;
 import java.util.Optional;
 
 import org.openqa.selenium.Rectangle;
@@ -26,10 +28,20 @@ public class CaruselBelt extends Section{
 	private Button arrowRight;
 	
 	public Tile findItem(String title) {
+		logger.debug("Number of items in a carucel: " + items.size());
 		Optional<Tile> foundItem = items.stream().filter(item -> item.getTitle().getText().equals(title)).findFirst();
+		/*Tile foundItem = null;
+		for (Tile tile : items) {
+			if(tile.getTitle().getText().equals(title)) {
+				foundItem = tile;
+				break;
+			}
+		}
+		return foundItem;*/
+		
 		if(foundItem.isPresent()) {
 			int attempts = 3;
-			while(attempts > 0 && !foundItem.get().isDisplayed()) {
+			while(attempts > 0 && isBeyondTheScreen(foundItem.get())) {
 				scrollToTheRight();
 				attempts--;
 			}

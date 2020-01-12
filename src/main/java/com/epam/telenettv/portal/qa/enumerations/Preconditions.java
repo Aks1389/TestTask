@@ -1,15 +1,17 @@
 package com.epam.telenettv.portal.qa.enumerations;
 
-import static com.epam.telenettv.portal.qa.site.TelenettvSite.mainPage;
-import static com.epam.telenettv.portal.qa.site.TelenettvSite.waitLoading;
+import static com.epam.telenettv.portal.qa.site.TelenettvSite.*;
+
 import java.util.function.Supplier;
 
 import com.epam.commons.linqinterfaces.JAction;
-import com.epam.jdi.uitests.web.selenium.elements.composite.WebPage;
 import com.epam.jdi.uitests.web.selenium.preconditions.WebPreconditions;
+import com.epam.telenettv.portal.qa.pages.CustomWebPage;
 
 public enum Preconditions implements WebPreconditions{
-	IS_HOME_PAGE_OPENED(() -> mainPage.verifyOpened(), () -> openPage(mainPage));
+	IS_HOME_PAGE_OPENED(() -> mainPage.verifyOpened(), () -> openPage(mainPage)),
+	IS_MOVIES_AND_SERIES_PAGE_OPENED(() -> moviesAndSeriesPage.verifyOpened(), () -> openPage(moviesAndSeriesPage)),
+	IS_ITEM_PAGE_OPENED(() -> itemPage.verifyOpened(), () -> openPage(itemPage));
 
 	private Supplier<Boolean> checkAction;
     private JAction moveToAction;
@@ -29,8 +31,8 @@ public enum Preconditions implements WebPreconditions{
         moveToAction.invoke();
     }
 
-    public static void openPage(WebPage page) {
-        page.open();
-        waitLoading();
+    public static void openPage(CustomWebPage page) {
+        sidebar.selectPage(page.getPageName());
+        page.waitPageLoaded();
     }
 }

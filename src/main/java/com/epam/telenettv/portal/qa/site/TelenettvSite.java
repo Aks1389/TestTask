@@ -1,8 +1,13 @@
 package com.epam.telenettv.portal.qa.site;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
+import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.support.FindBy;
 
 import com.epam.commons.Timer;
+import com.epam.jdi.uitests.core.interfaces.complex.tables.interfaces.CheckPageTypes;
 import com.epam.jdi.uitests.web.selenium.elements.base.Element;
 import com.epam.jdi.uitests.web.selenium.elements.composite.WebSite;
 import com.epam.jdi.uitests.web.selenium.elements.pageobjects.annotations.JPage;
@@ -25,10 +30,10 @@ public class TelenettvSite extends WebSite {
 	@JPage(url = "/", title = "Home")
 	public static MainPage mainPage;
 	
-	@JPage(urlTemplate = "https?:\\/{2}.+\\/movies-and-series\\/.+\\.html")
-	public static MoviesAndSeries moviesAndSeries;
+	@JPage(urlTemplate = "https?:\\/{2}.+\\/movies-and-series\\/.+\\.html", urlCheckType = CheckPageTypes.MATCH)
+	public static MoviesAndSeries moviesAndSeriesPage;
 	
-	@JPage(urlTemplate = "https?:\\/{2}w{3}\\..+asset\\.html.+\\.html")
+	@JPage(urlTemplate = "https?:\\/{2}w{3}\\..+asset\\.html.+\\.html", urlCheckType = CheckPageTypes.MATCH)
 	public static ItemPage itemPage;
 	
 	//-------------- Common elements -----------------
@@ -38,22 +43,15 @@ public class TelenettvSite extends WebSite {
 	@FindBy(xpath = "//div[contains(@class, 'top-menu')]")
 	public static Header header;
 	
-	@FindBy(xpath = "//div[contains(@class,'content-wrapper')]/div[contains(@class, 'aem-Grid')]")
-	public static Element contentPresenceIndicator;
-
-	
-	public static void waitLoading() {
-		waitLoading(waitingElementsTimeout);
-	}
-	
-	public static void waitLoading(int timeoutSec) {
-		contentPresenceIndicator.setWaitTimeout(timeoutSec);
-		contentPresenceIndicator.waitDisplayed();
-	}
-	
 	public static void openPage(Pages page) {
 		sidebar.selectPage(page);
-		Timer.sleep(2000);
-		waitLoading();
+		
+	}
+	
+	public static boolean isBeyondTheScreen(Element element) {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		Rectangle rectangle = element.getWebElement().getRect();
+		return rectangle.getX() > screenSize.getWidth() ||
+			   rectangle.getY() > screenSize.getHeight();
 	}
 }

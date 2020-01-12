@@ -1,5 +1,6 @@
 package com.epam.telenettv.portal.qa.sections.carusel;
 
+import static com.epam.telenettv.portal.qa.site.TelenettvSite.itemPage;
 import org.openqa.selenium.support.FindBy;
 
 import com.epam.jdi.uitests.web.selenium.elements.common.Image;
@@ -22,6 +23,8 @@ public class Tile extends Section{
 	private Text title;
 	
 	public void clickLink() {
+		this.mouseOver();
 		link.click();
+		itemPage.checkOpened();
 	}
 }
