@@ -1,7 +1,7 @@
 package com.epam.telenettv.portal.qa.sections.carusel;
 
 import static com.epam.jdi.uitests.core.settings.JDISettings.logger;
-import static com.epam.telenettv.portal.qa.site.TelenettvSite.isBeyondTheScreen;
+import static com.epam.telenettv.portal.qa.site.TelenettvSite.isElementBeyondTheScreen;
 import java.util.Optional;
 
 import org.openqa.selenium.Rectangle;
@@ -16,32 +16,27 @@ import com.epam.jdi.uitests.web.selenium.elements.common.Button;
 import com.epam.jdi.uitests.web.selenium.elements.complex.Elements;
 import com.epam.jdi.uitests.web.selenium.elements.composite.Section;
 
+import lombok.Getter;
+
 public class CaruselBelt extends Section{
 
-	@FindBy(xpath = ".//div[contains[@class, 'carousel-arrow-left']")
+	@FindBy(xpath = ".//div[contains(@class, 'carousel-arrow-left')]")
 	private Button arrowLeft;
 	
+	@Getter
 	@FindBy(xpath = ".//div[@class = 'carousel-item']")
 	private Elements<Tile> items;
 	
-	@FindBy(xpath = ".//div[contains[@class, 'carousel-arrow-right']")
+	@FindBy(xpath = ".//div[contains(@class, 'carousel-arrow-right')]")
+	                   
 	private Button arrowRight;
 	
 	public Tile findItem(String title) {
 		logger.debug("Number of items in a carucel: " + items.size());
 		Optional<Tile> foundItem = items.stream().filter(item -> item.getTitle().getText().equals(title)).findFirst();
-		/*Tile foundItem = null;
-		for (Tile tile : items) {
-			if(tile.getTitle().getText().equals(title)) {
-				foundItem = tile;
-				break;
-			}
-		}
-		return foundItem;*/
-		
 		if(foundItem.isPresent()) {
 			int attempts = 3;
-			while(attempts > 0 && isBeyondTheScreen(foundItem.get())) {
+			while(attempts > 0 && isElementBeyondTheScreen(foundItem.get())) {
 				scrollToTheRight();
 				attempts--;
 			}
@@ -66,7 +61,7 @@ public class CaruselBelt extends Section{
 		WebDriverWait wait = new WebDriverWait(webDriver, 10);
 		
 		Actions action = new Actions(webDriver);
-		action.moveToElement(itemsBox, rectangle.getWidth()-10, rectangle.getHeight()/2).build().perform();
+		action.moveToElement(itemsBox, rectangle.getWidth()/2-10, 0).build().perform();
 		arrowRight = new Button(wait.until(ExpectedConditions.elementToBeClickable(arrowRight.getWebElement())));
 		arrowRight.setParent(this);
 	}

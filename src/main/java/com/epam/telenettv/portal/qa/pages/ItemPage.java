@@ -8,11 +8,19 @@ import org.awaitility.Awaitility;
 import org.openqa.selenium.support.FindBy;
 
 import com.epam.jdi.uitests.web.selenium.elements.common.Label;
+import com.epam.telenettv.portal.qa.sections.carusel.CaruselBelt;
+
+import lombok.Getter;
 
 public class ItemPage extends CustomWebPage {
 
+	@Getter
 	@FindBy(xpath = ".//div[@class = 'orion-titlecard-header']//h1")
 	private Label itemTitle;
+	
+	@Getter
+	@FindBy(xpath = ".//div[@class = 'orion-titlecard-episodes-picker']//div[@class = 'carousel-wrapper horizontal']")
+	private CaruselBelt carucelBelt;
 
 	@Override
 	public void waitPageLoaded() {

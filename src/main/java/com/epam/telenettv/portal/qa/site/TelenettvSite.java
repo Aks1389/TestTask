@@ -48,7 +48,7 @@ public class TelenettvSite extends WebSite {
 		
 	}
 	
-	public static boolean isBeyondTheScreen(Element element) {
+	public static boolean isElementBeyondTheScreen(Element element) {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Rectangle rectangle = element.getWebElement().getRect();
 		return rectangle.getX() > screenSize.getWidth() ||

@@ -12,6 +12,7 @@ import lombok.Getter;
 
 public class Tile extends Section{
 
+	@Getter
 	@FindBy(xpath = ".//img")
 	private Image poster;
 	
