@@ -16,6 +16,7 @@ public class PickingSeriesTest extends InitTelenettvTest{
 		isInState(IS_MOVIES_AND_SERIES_PAGE_OPENED);
 		String requiredItemName = "Game of Thrones";
 		moviesAndSeriesPage.getContentSection("Home of HBO").getItem(requiredItemName).clickLink();
-		Assert.assertEquals(itemPage.getTitle(), requiredItemName);
+		Assert.assertEquals(itemPage.getItemTitle().getText(), requiredItemName);
+		
 	}
 }

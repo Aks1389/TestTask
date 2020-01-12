@@ -31,7 +31,6 @@ public class ContentSection extends Section {
 	}
 
 	public Tile getItem(String title) {
-		Timer.sleep(2000);
 		return carucelBelt.findItem(title);
 	}
 
@@ -39,14 +38,6 @@ public class ContentSection extends Section {
 	 * Takes elements in a carucel that are within screen frames and waits until all posters are loaded
 	 * */
 	public void waitLoaded() {
-		List<Tile> filteredItems = carucelBelt.getItems().stream().filter(item -> !isElementBeyondTheScreen(item)).collect(Collectors.toList());
-		
-		AwaitilityHelper.await(15, () -> {
-				return filteredItems.stream().allMatch(item -> {
-					logger.debug(String.format("\n\rChecking item's %s picture loaded...", item.getTitle().getText()));
-					return item.getPoster().isDisplayed();
-				});
-			}, 3, String.format("Couldn't wait until all posters in a section '%s' get loaded.", label.getText())
-		);
+		carucelBelt.waitLoaded(label.getText());
 	}
 }
