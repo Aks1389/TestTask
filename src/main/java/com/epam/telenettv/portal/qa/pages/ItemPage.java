@@ -2,7 +2,6 @@ package com.epam.telenettv.portal.qa.pages;
 
 import static com.epam.telenettv.portal.qa.site.TelenettvSite.waitIfMaintenanceFinished;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
@@ -15,7 +14,7 @@ import com.epam.telenettv.utils.AwaitilityHelper;
 import lombok.Getter;
 
 public class ItemPage extends CustomWebPage {
-
+	
 	@FindBy(xpath = "//a[contains(@class, 'back-button')]/parent::span")
 	private Button back;
 	
@@ -58,5 +57,4 @@ public class ItemPage extends CustomWebPage {
 		Assert.assertTrue(seriesEpisodeTitle.getText().matches(regExp), 
 				String.format("Wrong episode. Expected: %s. Actual: %s", episodeNumber, seriesEpisodeTitle.getText()));
 	}
-	
 }

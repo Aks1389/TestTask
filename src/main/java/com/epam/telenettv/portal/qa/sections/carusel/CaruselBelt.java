@@ -33,7 +33,6 @@ public class CaruselBelt extends Section{
 	private Elements<Tile> items;
 	
 	@FindBy(xpath = ".//div[contains(@class, 'carousel-arrow-right')]")
-	                   
 	private Button arrowRight;
 	
 	/**
@@ -54,18 +53,15 @@ public class CaruselBelt extends Section{
 	}
 	
 	public Tile findItem(String title) {
-		logger.debug("Number of items in a carucel: " + items.size());
+		logger.debug("Number of items in a carusel: " + items.size());
 		Optional<Tile> foundItem = items.stream().filter(item -> item.getTitle().getText().equals(title)).findFirst();
-		if(foundItem.isPresent()) {
-			moveCaruselToItem(foundItem.get());
-			return foundItem.get();
-		} else {
-			return null;
-		}
+		Assert.assertTrue(foundItem.isPresent(), "There is no such title: " + title);
+		moveCaruselToItem(foundItem.get());
+		return foundItem.get();
 	}
 	
 	public Tile findItem(int number) {
-		logger.debug("Number of items in a carucel: " + items.size());
+		logger.debug("Number of items in a carusel: " + items.size());
 		Tile foundItem = items.get(number);
 		moveCaruselToItem(foundItem);
 		return foundItem;
@@ -73,8 +69,12 @@ public class CaruselBelt extends Section{
 	
 	public void moveCaruselToItem(Tile foundItem) {
 		int attempts = 3;
-		while(attempts > 0 && isElementBeyondTheScreen(foundItem)) {
-			scrollToTheRight();
+		while(attempts > 0) {
+			if(isElementBeyondTheScreen(foundItem)) {
+				scrollToTheRight();				
+			} else {
+				break;
+			}
 			attempts--;
 		}
 		Assert.assertFalse(isElementBeyondTheScreen(foundItem), "Failed to scroll to the required item");

@@ -16,18 +16,18 @@ public class ContentSection extends Section {
 
 	@Getter
 	@FindBy(xpath = ".//div[@class = 'carousel-wrapper horizontal']")
-	private CaruselBelt carucelBelt;
+	private CaruselBelt caruselBelt;
 
 	public String getLabel() {
 		return label.getText();
 	}
 
 	public Tile getItem(String title) {
-		return carucelBelt.findItem(title);
+		return caruselBelt.findItem(title);
 	}
 
 	
 	public void waitLoaded() {
-		carucelBelt.waitLoaded(label.getText());
+		caruselBelt.waitLoaded(label.getText());
 	}
 }
