@@ -6,17 +6,20 @@ import java.awt.Toolkit;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.support.FindBy;
 
-import com.epam.commons.Timer;
 import com.epam.jdi.uitests.core.interfaces.complex.tables.interfaces.CheckPageTypes;
+import com.epam.jdi.uitests.core.logger.LogLevels;
 import com.epam.jdi.uitests.web.selenium.elements.base.Element;
 import com.epam.jdi.uitests.web.selenium.elements.composite.WebSite;
 import com.epam.jdi.uitests.web.selenium.elements.pageobjects.annotations.JPage;
+import com.epam.jdi.uitests.web.settings.WebSettings;
 import com.epam.telenettv.portal.qa.enumerations.Pages;
+import com.epam.telenettv.portal.qa.pages.CustomWebPage;
 import com.epam.telenettv.portal.qa.pages.ItemPage;
 import com.epam.telenettv.portal.qa.pages.MainPage;
 import com.epam.telenettv.portal.qa.pages.MoviesAndSeries;
 import com.epam.telenettv.portal.qa.sections.Header;
 import com.epam.telenettv.portal.qa.sections.Sidebar;
+import com.epam.telenettv.utils.AwaitilityHelper;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -53,5 +56,33 @@ public class TelenettvSite extends WebSite {
 		Rectangle rectangle = element.getWebElement().getRect();
 		return rectangle.getX() > screenSize.getWidth() ||
 			   rectangle.getY() > screenSize.getHeight();
+	}
+	
+	public static void waitIfMaintenanceFinished(CustomWebPage page) {
+		page.getMaintenanceMessage().setWaitTimeout(3);
+		try {
+			page.getMaintenanceMessage().waitDisplayed();
+		}
+		catch (AssertionError e) {
+			WebSettings.logger.setLogLevel(LogLevels.DEBUG);
+		}
+		AwaitilityHelper.await(20, () ->{
+			if(page.getMaintenanceMessage().isDisplayed()) {
+				page.getRefresh().click();
+			}
+			return !page.getMaintenanceMessage().isDisplayed();
+		}, 2, "Couldn't wait finish of maintenance on site.");
+	}
+	
+	public static void moveElementWithinScreenFrames(Element element) {
+		try {
+			AwaitilityHelper.await(5, () ->{
+				element.focus();
+				return !isElementBeyondTheScreen(element);
+			}, 1, "Couldn't wait finish of maintenance on site.");
+		}
+		catch (Exception e) {
+			WebSettings.logger.setLogLevel(LogLevels.DEBUG);
+		}
 	}
 }

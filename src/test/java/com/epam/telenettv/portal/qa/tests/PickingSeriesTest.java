@@ -14,9 +14,16 @@ public class PickingSeriesTest extends InitTelenettvTest{
 	@Test
 	public void pickSeriesTest() {
 		isInState(IS_MOVIES_AND_SERIES_PAGE_OPENED);
-		String requiredItemName = "Game of Thrones";
-		moviesAndSeriesPage.getContentSection("Home of HBO").getItem(requiredItemName).clickLink();
-		Assert.assertEquals(itemPage.getItemTitle().getText(), requiredItemName);
 		
+		String contentSectionName = "Home of HBO";
+		String showTitle = "Game of Thrones";
+		int episodeNumber = 10;
+		
+		moviesAndSeriesPage.getContentSection(contentSectionName).getItem(showTitle).clickLink();
+		Assert.assertEquals(itemPage.getItemTitle().getText(), showTitle);
+		
+		itemPage.getEpisode(episodeNumber).clickLink();
+		itemPage.checkSeriesEpisodeNumber(episodeNumber);
+		itemPage.goBack(moviesAndSeriesPage);
 	}
 }

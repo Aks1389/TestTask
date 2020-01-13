@@ -1,5 +1,7 @@
 package com.epam.telenettv.portal.qa;
 
+import static com.epam.jdi.uitests.core.preconditions.PreconditionsState.isInState;
+import static com.epam.telenettv.portal.qa.enumerations.Preconditions.IS_HOME_PAGE_OPENED;
 import static com.epam.telenettv.portal.qa.site.TelenettvSite.mainPage;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.String.format;
@@ -32,8 +34,9 @@ public class InitTelenettvTest extends TestNGBase {
 		setDriver();
 		WebSite.init(TelenettvSite.class);
 		WebSettings.logger.setLogLevel(LogLevels.DEBUG);
+		WebSettings.asserter.doScreenshot("off");
         TelenettvSite.setWaitingElementsTimeout(Integer.parseInt(prop.getProperty("timeout.wait.element", "20")));
-        mainPage.open();
+        mainPage.openPage();
     }
 	
 	private void setDriver() {

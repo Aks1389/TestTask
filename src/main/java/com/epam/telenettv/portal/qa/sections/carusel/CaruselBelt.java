@@ -14,6 +14,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import com.epam.jdi.uitests.web.selenium.elements.common.Button;
 import com.epam.jdi.uitests.web.selenium.elements.complex.Elements;
@@ -35,6 +36,9 @@ public class CaruselBelt extends Section{
 	                   
 	private Button arrowRight;
 	
+	/**
+	 * Takes elements in a carusel that are within screen frames and waits until all posters are loaded
+	 * */
 	public CaruselBelt waitLoaded(String sectionName) {
 		List<Tile> filteredItems = items.stream().filter(item -> !isElementBeyondTheScreen(item)).collect(Collectors.toList());
 		
@@ -52,17 +56,29 @@ public class CaruselBelt extends Section{
 		logger.debug("Number of items in a carucel: " + items.size());
 		Optional<Tile> foundItem = items.stream().filter(item -> item.getTitle().getText().equals(title)).findFirst();
 		if(foundItem.isPresent()) {
-			int attempts = 3;
-			while(attempts > 0 && isElementBeyondTheScreen(foundItem.get())) {
-				scrollToTheRight();
-				attempts--;
-			}
+			moveCaruselToItem(foundItem.get());
 			return foundItem.get();
 		} else {
 			return null;
 		}
 	}
-
+	
+	public Tile findItem(int number) {
+		logger.debug("Number of items in a carucel: " + items.size());
+		Tile foundItem = items.get(number);
+		moveCaruselToItem(foundItem);
+		return foundItem;
+	}
+	
+	public void moveCaruselToItem(Tile foundItem) {
+		int attempts = 3;
+		while(attempts > 0 && isElementBeyondTheScreen(foundItem)) {
+			scrollToTheRight();
+			attempts--;
+		}
+		Assert.assertFalse(isElementBeyondTheScreen(foundItem), "Failed to scroll to the required item");
+	}
+	
 	public boolean isLeftArrowHidden() {
 		return !arrowLeft.getAttribute("class").contains("hidden");
 	}

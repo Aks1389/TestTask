@@ -20,12 +20,13 @@ public class Tile extends Section{
 	private Link link;
 	
 	@Getter
-	@FindBy(xpath = ".//div[contains(@class, 'ui-kit-tile-string--primary')] | .//div[@class = 'orion-titlecard-episodes-picker__title']")
+	@FindBy(xpath = ".//div[contains(@class, 'ui-kit-tile-string--primary')]/div | .//div[@class = 'orion-titlecard-episodes-picker__title']")
 	private Text title;
 	
 	public void clickLink() {
 		this.mouseOver();
-		link.click();
+//		link.click();
+		poster.click();
 		itemPage.checkOpened();
 		itemPage.waitPageLoaded();
 	}
