@@ -40,6 +40,7 @@ public class CaruselBelt extends Section{
 	 * Takes elements in a carusel that are within screen frames and waits until all posters are loaded
 	 * */
 	public CaruselBelt waitLoaded(String sectionName) {
+		logger.debug("Number of items in carusel: " + items.size());
 		List<Tile> filteredItems = items.stream().filter(item -> !isElementBeyondTheScreen(item)).collect(Collectors.toList());
 		
 		AwaitilityHelper.await(15, () -> {
