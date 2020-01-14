@@ -30,7 +30,7 @@ public class TelenettvSite extends WebSite {
 	private static int waitingElementsTimeout;
 
 	//------------- Pages ------------------------------
-	@JPage(url = "/", title = "Home")
+	@JPage(url = "", title = "Home")
 	public static MainPage mainPage;
 	
 	@JPage(urlTemplate = "https?:\\/{2}.+\\/movies-and-series\\/.+\\.html", urlCheckType = CheckPageTypes.MATCH)
@@ -79,7 +79,7 @@ public class TelenettvSite extends WebSite {
 			AwaitilityHelper.await(5, () ->{
 				element.focus();
 				return !isElementBeyondTheScreen(element);
-			}, 1, "Couldn't wait finish of maintenance on site.");
+			}, 1, "");
 		}
 		catch (Exception e) {
 			WebSettings.logger.setLogLevel(LogLevels.DEBUG);

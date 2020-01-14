@@ -25,6 +25,7 @@ public class MoviesAndSeries extends CustomWebPage {
 		ContentSection foundSection = contentSection.stream().filter(section -> section.getLabel().equals(title))
 				             .findFirst().orElse(null);
 		Assert.assertNotNull(foundSection, "There is no content section named: " + title);
+		Assert.assertNotNull(foundSection.getWebElement(), "WebElement lost in the section " + title);
 		moveElementWithinScreenFrames(foundSection);
 		foundSection.waitLoaded();
 		return foundSection;

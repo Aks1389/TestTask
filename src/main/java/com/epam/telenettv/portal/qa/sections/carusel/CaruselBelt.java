@@ -40,7 +40,12 @@ public class CaruselBelt extends Section{
 	 * */
 	public CaruselBelt waitLoaded(String sectionName) {
 		logger.debug("Number of items in carusel: " + items.size());
-		List<Tile> filteredItems = items.stream().filter(item -> !isElementBeyondTheScreen(item)).collect(Collectors.toList());
+		List<Tile> filteredItems = items.stream().filter(item -> !isElementBeyondTheScreen(item))
+				.map(item -> {
+					item.setParent(this);
+					return item;
+				})
+				.collect(Collectors.toList());
 		
 		AwaitilityHelper.await(15, () -> {
 				return filteredItems.stream().allMatch(item -> {
@@ -92,29 +97,24 @@ public class CaruselBelt extends Section{
 		WebDriver webDriver = this.getDriver();
 		WebElement itemsBox = this.getWebElement();
 		Rectangle rectangle = itemsBox.getRect();
-		WebDriverWait wait = new WebDriverWait(webDriver, 10);
 		
 		Actions action = new Actions(webDriver);
 		action.moveToElement(itemsBox, rectangle.getWidth()/2-10, 0).build().perform();
-		arrowRight = new Button(wait.until(ExpectedConditions.elementToBeClickable(arrowRight.getWebElement())));
-		arrowRight.setParent(this);
 	}
 	
 	private void hoverOverLeftArrow() {
 		WebDriver webDriver = this.getDriver();
 		WebElement itemsBox = this.getWebElement();
 		Rectangle rectangle = itemsBox.getRect();
-		WebDriverWait wait = new WebDriverWait(webDriver, 10);
 		
 		Actions action = new Actions(webDriver);
 		action.moveToElement(itemsBox, 10 - rectangle.getWidth()/2, 0).build().perform();
-		arrowLeft = new Button(wait.until(ExpectedConditions.elementToBeClickable(arrowLeft.getWebElement())));
-		arrowLeft.setParent(this);
 	}
 	
 	private void scrollToTheRight() {
 		hoverOverRightArrow();
 		arrowRight.click();
+		waitLoaded("");
 	}
 	
 	private void scrollToTheLeft() {
